@@ -1,0 +1,45 @@
+---
+
+- name: Ansible EC2 instance Launch module demo
+
+# Defining the remote server where the Ansible EC2 module will manage the objects
+
+  hosts: localhost
+
+  remote_user: ubuntu # Using Remote user as ubuntu
+
+  tasks:
+
+  # Task to start an AWS EC2 instance with a public IP
+
+  - name: Start an AWS EC2 instance using Master
+
+    ec2:
+
+      # Setting the keyname
+
+      key_name: Target1
+
+      # Define the instance_type, image, vpc_subnet_id, assign_public_ip, aws_region
+
+      instance_type: t2.micro
+
+      image: ami-0dc45eed218eeb2d3
+
+      wait: yes
+
+      count: 1
+
+      instance_tags:
+
+        Name: Target1
+
+      vpc_subnet_id: subnet-03d5e936e552abcf4
+
+      assign_public_ip: yes
+
+      aws_region: us-west-1
+
+      aws_access_key: AKIAZPNQMM7UFTH4TUQM
+
+      aws_secret_key: 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

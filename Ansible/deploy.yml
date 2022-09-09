@@ -1,0 +1,20 @@
+---
+- name: Demo playbook to deploy webserver on Target machines
+  hosts: webservers
+  tasks:
+  
+    - name: Install httpd package
+      dnf:
+        name: httpd
+        state: latest
+        
+    - name: Start and enable httpd service
+      service:
+        name: httpd
+        enabled: true
+        state: started
+        
+    - name: Create a custom index.html file
+      copy:
+        dest: /var/www/html/index.html
+        content: "Hello world from SJSU"

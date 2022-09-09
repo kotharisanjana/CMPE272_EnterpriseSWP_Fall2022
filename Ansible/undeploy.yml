@@ -1,0 +1,16 @@
+---
+- name: Playbook to undeploy webservers from target nodes
+hosts: webservers
+tasks:
+
+  - name: Stop and disbable httpd service
+    service:
+      name: httpd
+      enabled: false
+      state: stopped
+    
+  - name: Remove httpd package
+    dnf:
+      name: httpd
+      state: absent
+     
