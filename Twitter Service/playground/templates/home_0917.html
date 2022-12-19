@@ -1,0 +1,151 @@
+<!--## Author: HArika Satti and Sdiddanth Sanchte
+## This file contains HTML and Javascript code 
+-->
+<html>
+    <head>
+        <title>Portal</title>
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/Portal.css' %}">
+
+        <script language="javascript" type="text/javascript">
+            var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        function submitform(formid,content) {
+            console.log(formid);
+            console.log(content);
+            if(formid != 'deleteForm')
+                url = document.getElementById(formid).action;
+            else
+                url = '/twitterapi/delete_tweet/';
+           
+            console.log(url);
+            content = document.getElementById(content).value;
+            console.log(url);
+            console.log(content);
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'content': content},
+                success: function(data){
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    $("#resultarea").text(JSON.stringify(data));
+                },
+                error: function(data){
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    $("#resultarea").text(JSON.stringify(data));
+                }
+            });
+        }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="jumbotron">
+                        <h1>Twitter Service Test Page</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Submit a tweet to timeline</div>
+                        <div class="panel-body">
+                            
+                            <form id="create" method="post" action='/twitterapi/create_tweet/'>
+                                {% csrf_token %}
+                                <p>Please enter Tweet text </p>
+                                <textarea id="create.content" name="create.content" rows="5" cols="50"></textarea>
+                                <br>
+                                <br>
+                                <br>
+                                <p>
+                                    <a class="button3" onclick="submitform('create','create.content')">Submit</a>
+                                    <a class="button3">Clear</a>
+                                </p>
+                                <!--<p><input type="submit" value="Submit" /></p>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Retrieve Latest tweets posted </div>
+                        <div class="panel-body">
+                            <form id="retrieve" method="post" action='/twitterapi/get_timeline_tweets/'>
+                                {% csrf_token %}
+                                <p>Enter twitter username </p>
+                                <p><input id ="retrieve.content" type="text" name="retrieve.content" /></p>
+                                <a class="button3" onclick="submitform('retrieve','retrieve.content')">Retrieve</a>
+                            <form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"> Delete Tweet</div>
+                        <div class="panel-body">
+                            <form id="deleteForm" method="post" action='/twitterapi/delete_tweet/'>
+                                {% csrf_token %}
+                                <p>Enter tweet id </p>
+                                <p><input id="delete.content" type="text" name="delete.content" /></p>
+                                <a  class="button3" onclick="submitform('deleteForm','delete.content')">Delete</a>
+                            <form>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Result</div>
+                        <div class="panel-body">
+                            
+                            <textarea id="resultarea" name="create.content" rows="5" cols="50"></textarea>
+                       
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Widget</div>
+                        <div class="panel-body">
+                            
+                            <a class="twitter-timeline" href="https://twitter.com/SanjanaRajeshK1?ref_src=twsrc%5Etfw">Tweets by SanjanaRajeshK1</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+
+                
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

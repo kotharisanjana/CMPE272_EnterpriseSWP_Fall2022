@@ -1,0 +1,30 @@
+<head> <title> Twitter API Test Page</title> </head>
+<h1> Twitter API Test Page</h1>
+<p> This page is used to test the Twitter API. </p>
+
+<body>
+    Submit a tweet: <br>
+    <form method="post" action='/twitterapi/create_tweet/'>
+        {% csrf_token %}
+        <p>Enter a Twitter txt: <input type="text" name="content" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+
+    <br>
+    <br>
+
+    <p>User timeline tweets: </p>
+    <form method="post" action='/twitterapi/get_timeline_tweets/'>
+        {% csrf_token %}
+        <p>Enter a user id: <input type="text" name="content" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+
+    <br>
+    Delete a tweet: <br>
+    <form method="post" action='/twitterapi/delete_tweet/'>
+        {% csrf_token %}
+        <p>Enter a Tweet id: <input type="text" name="content" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+</body>

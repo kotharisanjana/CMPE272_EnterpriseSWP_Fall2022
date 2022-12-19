@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Portal</title>
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/Portal.css' %}">
+
+        <script language="javascript" type="text/javascript">
+            function submitform(formid) {
+               document.getElementById(formid).submit();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="jumbotron">
+                        <h1>Twitter Service Test Page</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Submit a tweet to timeline</div>
+                        <div class="panel-body">
+                            
+                            <form id="create" method="post" action='/twitterapi/create_tweet/'>
+                                {% csrf_token %}
+                                <p>Please enter Tweet text </p>
+                                <textarea id="content" name="content" rows="5" cols="50"></textarea>
+                                <br>
+                                <br>
+                                <br>
+                                <p>
+                                    <a class="button3" onclick="submitform('create')">Submit</a>
+                                    <a class="button3">Clear</a>
+                                </p>
+                                <!--<p><input type="submit" value="Submit" /></p>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Retrieve Latest tweets posted </div>
+                        <div class="panel-body">
+                            <form id="retrieve" method="post" action='/twitterapi/get_timeline_tweets/'>
+                                {% csrf_token %}
+                                <p>Enter twitter username </p>
+                                <p><input type="text" name="content" /></p>
+                                <a class="button3" onclick="submitform('retrieve')">Retrieve</a>
+                            <form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"> Delete Tweet</div>
+                        <div class="panel-body">
+                            <form id="delete" method="post" action='/twitterapi/delete_tweet/'>
+                                {% csrf_token %}
+                                <p>Enter tweet id </p>
+                                <p><input type="text" name="content" /></p>
+                                <a  class="button3" onclick="submitform('delete')">Delete</a>
+                            <form>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+    </body>
+</html>

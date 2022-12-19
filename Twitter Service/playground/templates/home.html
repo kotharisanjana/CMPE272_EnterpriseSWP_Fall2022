@@ -1,0 +1,267 @@
+<!--## Author: Harika Satti and Sdiddanth Sanchte
+## This file contains HTML and Javascript code 
+-->
+<html>
+<head>
+      
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+       
+             
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/Portal.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <script language="javascript" type="text/javascript">
+            var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        function submitform(formid,content) {
+            console.log(formid);
+            console.log(content);
+            let content_orig = content;
+            if(formid != 'deleteForm')
+                url = document.getElementById(formid).action;
+            else
+                url = '/twitterapi/delete_tweet/';
+            let resultModalHeader = '';
+            let resultModalContentFail = '';
+            let resultModalContentSuccess = '';
+            console.log(url);
+            content = document.getElementById(content).value;
+            console.log(url);
+            
+            
+            if(content_orig== "create.content")
+            { 
+                resultModalContentSuccess = "Tweet created successfully";
+                resultModalContentFail = "Error occured while creating tweets.";
+                resultModalHeader = "Tweet creation status."
+            }
+            else if(content_orig== "retrieve.content")
+            { 
+                resultModalContentSuccess = "";
+                resultModalContentFail = "Error occured!"
+                resultModalHeader = "Recent Tweets"
+            }
+            else if(content_orig== "delete.content")
+            { 
+                resultModalContentSuccess = "Tweet deleted successfully";
+                resultModalContentFail = "Error occured!"
+                resultModalHeader = "Tweet deletion status."
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'content': content},
+                success: function(data){
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    //$("#resultarea").text(data.data.map(x => x.text).join("\n"));
+
+                    $("#resultarea").text(JSON.stringify(data))
+                    $("#resultContent").text(resultModalContentSuccess);
+                    $("#exampleModalLongTitle").text(resultModalHeader);
+        
+                    
+                },
+                error: function(data){
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    $("#resultarea").text(JSON.stringify(data))
+                    $("#resultContent").text(resultModalContentFail);
+                    $("#exampleModalLongTitle").text(resultModalHeader);
+                }                
+
+            })
+            ;
+        }
+        </script>    
+</head>
+<body>
+    <div class="bg">
+    <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="jumbotron" >
+                        <div class="media">
+                            <img src="{% static 'images/twitter_blue.png' %}" class="mr-3" alt="logo" width="30" height="30">
+                            <div class="media-body bg-dark text-white">
+                                <h1 class="display-2">Twitter API </h1>
+                                <p class="lead">This is a simple web application to demonstrate the use of Twitter API.</p>
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="accordion" id="accordionExample">
+          <div class="item">
+            <div class="item-header" id="headingTwo">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Submit a tweet
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="t-p">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Submit a tweet to timeline</div>
+                    <div class="panel-body">
+                        
+                        <form id="create" method="post" action='/twitterapi/create_tweet/'>
+                            {% csrf_token %}
+                            <p>Please enter Tweet text </p>
+                            <textarea id="create.content" name="create.content" rows="5" cols="112%" required></textarea>
+                            <br>
+                            <br>
+                            <br>
+                            <p>
+                                
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" 
+                                onclick="submitform('create','create.content')"
+                                >
+                                    Submit
+                                  </button>
+                                <button type="reset" class="btn btn-primary">Clear</button>
+                            </p>
+                            <!--<p><input type="submit" value="Submit" /></p>-->
+                        </form>
+                    </div>
+                </div>
+               
+            </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-header" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Retrieve tweets
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div class="t-p">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Retrieve tweets</div>
+                    <div class="panel-body">
+                        <form id="retrieve" method="post" action='/twitterapi/get_timeline_tweets/'>
+                            {% csrf_token %}
+                            <p>Enter twitter username </p>
+                            <p><input id ="retrieve.content" type="text" name="retrieve.content" required /></p>
+                        
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" 
+                                    onclick="submitform('retrieve','retrieve.content')"
+                                    > Retrieve </button>
+                                    <button type="reset" class="btn btn-primary">Clear</button>
+                        <form>
+
+                </div>
+            </div>
+               
+            </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-header" id="headingFour">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Delete a tweet
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </h2>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+              <div class="t-p">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Delete a tweets using a tweet id</div>
+                <div class="panel-body">
+                    <form id="deleteForm" method="post" action='/twitterapi/delete_tweet/'>
+                        {% csrf_token %}
+                        <p>Enter tweet id </p>
+                        <p><input id="delete.content" type="text" name="delete.content" required /></p>
+                        
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" 
+                                onclick="submitform('deleteForm','delete.content')"> Delete </button>
+                                <button type="reset" class="btn btn-primary">Clear</button>
+                
+                    <form>
+                </div>
+            </div>
+            
+                </div>
+            </div>
+          </div>
+          {% comment %} <div class="item">
+            <div class="item-header" id="headingFive">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  Result:
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </h2>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                          <div class="t-p">
+                <textarea id="resultarea1231" name="create.content" rows="5" cols="50"></textarea>
+              </div>
+            </div>
+          </div> {% endcomment %}
+        </div>
+
+
+
+        <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLongTitle"></h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <h5 id="resultContent"></h5>
+            <span id="resultarea" name="create.content" rows="5" cols="50"></span>
+        </div>
+        <div class="modal-footer">
+          
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        
+        
+
+      </div>
+    </div>
+
+ <!-- userid : 1569455471295340544 -->
+
+</body>
+</html>

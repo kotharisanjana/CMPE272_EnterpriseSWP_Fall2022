@@ -1,0 +1,100 @@
+/*--## Author: Harika Satti and Siddhant Sancheti
+## This file contains HTML and Javascript code 
+*/
+
+body, html {
+    height: 100%;
+  }
+body {
+    background: #232323;
+}
+.bg {
+    /* The image used */
+    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).webp");
+  
+    /* Half height */
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+.accordion{
+    margin: 40px 0;
+}
+
+.panel-heading{
+    background: #444646  !important;
+    border-color: coral !important;
+}
+
+.panel-body{
+    background:lightgray !important;
+}
+
+.btn-primary{
+    background : darkgray !important;
+}
+.panel{
+    border-color: #eca300;!important;
+}
+
+.accordion .item {
+    border: none;
+    margin-bottom: 50px;
+    background: none;
+}
+.t-p{
+    color:rgb(87, 90, 93);
+    padding: 40px 30px 0px 30px;
+}
+.t-p span{
+    color:lightgray;
+}
+.accordion .item .item-header h2 button.btn.btn-link {
+    background: #333435;
+    color: white;
+    border-radius: 0px;
+    font-family:Poppins;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 2.5;
+    text-decoration: none;
+}
+.accordion .item .item-header {
+    border-bottom: none;
+    background: transparent;
+    padding: 0px;
+    margin: 2px;
+}
+
+.accordion .item .item-header h2 button {
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.accordion .item .item-header h2 i {
+    float: right;
+    font-size: 30px;
+    color: #eca300;
+    background-color: black;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+button.btn.btn-link.collapsed i {
+    transform: rotate(0deg);
+}
+
+button.btn.btn-link i {
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
